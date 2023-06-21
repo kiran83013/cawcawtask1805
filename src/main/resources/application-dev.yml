@@ -1,0 +1,46 @@
+server:
+  port: 1805
+    
+logging:
+  level:
+    org.springframework: ERROR
+    com.triangle: DEBUG
+    
+spring:
+  devtools:
+    restart:
+      enabled: true  
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+            implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+            physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  datasource:
+    url: jdbc:mysql://localhost:3306/cawcaw_java_db?useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&zeroDateTimeBehavior=convertToNull
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ap-south-1
+    credentials:
+      accessKey: AKIA4COQRGUFPYAJC2N3
+      secretKey: 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    
+com:
+  travel: 
+    travtronics:
+#      keycloak: 
+#        urlKeycloakHost: http://192.178.10.108:8080/auth
+#        client_secret: 9b8e415d-c2db-4439-9cb3-a24545b4fc8f
+      uploader:
+        bucketName: travtronics-altxmed
+      cdn:
+        url: https://d2prwoxphqiek7.cloudfront.net/
