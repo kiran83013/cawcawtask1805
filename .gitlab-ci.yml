@@ -1,0 +1,33 @@
+image: gitlab/dind
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay
+  
+build:
+  stage: build
+  script:
+    - mvn compile
+
+test:
+  stage: test
+  script:
+    - mvn test
+
+docker-deploy:
+  stage: deploy
+  script:
+    - mvn package
+    - docker build -f Dockerfile -t cawcaw_task_services:$CI_PIPELINE_ID . 
+    - docker tag cawcaw_task_services:$CI_PIPELINE_ID cawcaw_task_services:latest 
+    - export IMGID=`docker ps | grep cawcaw_task_services | awk '{print $1}'`
+    - |
+        if [ -n "$IMGID" ]
+        then
+          docker stop $IMGID
+          docker run -d -p 1805:1805  --restart always cawcaw_task_services:$CI_PIPELINE_ID  
+        else
+          echo "No relevant image avaliable"
+          docker run -d -p 1805:1805 --restart always cawcaw_task_services:$CI_PIPELINE_ID 
+        fi
